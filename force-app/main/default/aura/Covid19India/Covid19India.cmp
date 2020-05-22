@@ -1,0 +1,175 @@
+<aura:component controller="CovidController"  implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="CovidList" type="List" access="public" />
+    <aura:attribute name="SelectedDisList" type="List" access="public" />
+    <aura:attribute name="Date" type="string" />
+    <aura:attribute name="Time" type="string" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    <div class="slds-p-around_small">
+        <div class="slds-text-title "><p class="slds-text-heading_large">Covid19India tracker </p></div>
+        <div class="slds-text-align_right slds-text-color_success">Date-{!v.Date}</div>
+        <center class="slds-text-color_success">  <p> Last Update - {!v.Time} IST      </p></center>
+    </div>
+    <div class="c-container">
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="12">
+                <div class="header-column">
+                    <div class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_fixed-layout slds-box slds-theme_shade" role="grid">
+                        <table >
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="confirmed">confirmed</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Active">Active</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Recovered">Recovered</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Deceased">Deceased</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration start="0" end="1" items="{!v.CovidList}" var="co">
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row">
+                                            <div class="slds-truncate slds-text-color_success" title="confirmed">[+{!co.deltaconfirmed}]</div>
+                                        </th>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Active"></div>
+                                        </td>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate slds-text-color_success" title="Recovered">[+{!co.deltarecovered}]</div>
+                                        </td>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate slds-text-color_success" title="Deceased">[+{!co.deltadeaths}]</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row">
+                                            <div class="slds-truncate" title="Confimed">{!co.confirmed}</div>
+                                        </th>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Active">{!co.active}</div>
+                                        </td>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Recovered">{!co.recovered}</div>
+                                        </td>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Deceased">{!co.deaths}</div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem padding="around-small" size="12">
+                <lightning:layout>
+                    
+                    <lightning:layoutItem padding="around-small" size="6">
+                        <div class="header-column">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                                
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Stage / UT">Stage / UT</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Confirmed">Confirmed</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Active">Active</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Recovered">Recovered</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Deceased">Deceased</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <aura:iteration start="1" items="{!v.CovidList}" var="covid" indexVar="index">    
+                                        <tr class="slds-hint-parent"  onclick="{! c.showRow }"  data-row-index="{!index}">
+                                            
+                                            
+                                            <th data-label="Stage / UT" scope="row">
+                                                <div class="slds-truncate" title="+{covid.state}">
+                                                    <a href="javascript:void(0);" tabindex="-1">{!covid.state}</a>
+                                                </div>
+                                            </th>
+                                            <td data-label="Confirmed">
+                                                <div class="slds-truncate" title="{!covid.confirmed}">{!covid.confirmed}</div>
+                                            </td>
+                                            <td data-label="Close Date">
+                                                <div class="slds-truncate" title="{! covid.active}">{!covid.active}</div>
+                                            </td>
+                                            <td data-label="Prospecting">
+                                                <div class="slds-truncate" title="{!covid.recovered}">{!covid.recovered}</div>
+                                            </td>
+                                            <td data-label="Confidence">
+                                                <div class="slds-truncate" title="{!covid.deaths}">{!covid.deaths}</div>
+                                            </td>
+                                            
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small" size="6">
+                        <div class="header-column">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                                
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="District">District</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Confirmed">Confirmed</div>
+                                        </th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <aura:iteration start="1" items="{!v.SelectedDisList}" var="dis" >    
+                                        <tr class="slds-hint-parent"  >
+                                            <th data-label="District" scope="row">
+                                                <div class="slds-truncate" title="+{dis.district}">
+                                                    <a href="javascript:void(0);" tabindex="-1">{!dis.district}</a>
+                                                </div>
+                                            </th>
+                                            <td data-label="Confirmed">
+                                                <div class="slds-truncate" title="Confirmed">{!dis.confirmed}</div>
+                                            </td>
+                                            
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="around-small" size="12">
+                <div class="page-footer page-section">
+                    <h2>Footer</h2>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+    
+    
+</aura:component>
